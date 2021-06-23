@@ -1,0 +1,21 @@
+
+@font-face {font-family: "Titillium Bold";
+  src: url("../fonts/d534f4c28b727342a013a7034ec2d87e.eot"); /* IE9*/
+  src: url("../fonts/d534f4c28b727342a013a7034ec2d87e.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("../fonts/d534f4c28b727342a013a7034ec2d87e.woff2") format("woff2"), /* chrome、firefox */
+  url("../fonts/d534f4c28b727342a013a7034ec2d87e.woff") format("woff"), /* chrome、firefox */
+  url("../fonts/d534f4c28b727342a013a7034ec2d87e.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url("../fonts/d534f4c28b727342a013a7034ec2d87e.svg#Titillium Bold") format("svg"); /* iOS 4.1- */
+}
+
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+    src: local('Material Icons'),
+      local('MaterialIcons-Regular'),
+      url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+      url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+      url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+  }

@@ -1,0 +1,139 @@
+
+@import "fonts";
+@import "global";
+
+.main-title{
+    margin: 5vh 0 2vh;
+    font-size: 1.5rem;
+}
+
+.keyboard__textarea{
+    width: 60vw;
+    height: 20vh;
+    resize: none;
+    margin-bottom: 2vh;
+    border: 5px solid #000;
+    padding: 1rem
+}
+
+.keyboard{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    flex-wrap: wrap;
+    border: 3px solid #000;
+    border-radius: 10px;
+    padding: 20px 20px 0;
+    width: 1086px;
+    background: linear-gradient(0deg, #000, #1d1d1d);
+
+    &__text-wrapper{
+        margin: 10px 0;
+    }
+    &__text{
+        margin-left: 20px;
+        font-size: .7rem;
+    }
+    &__keys{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__key{
+        background: #111;
+        border: 3px solid #54b1f3;
+        box-shadow: 0 0 10px rgba(33, 156, 243, 0.3), 
+                    0 0 20px rgba(33, 156, 243, 0.3), 
+                    0 0 30px rgba(33, 156, 243, 0.3), 
+                    inset 0 0 10px #219cf3;
+        border-radius: 10px;
+        width: 60px;
+        height: 60px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        transition: all .13s ease-in-out;
+        margin: 5px;
+        -webkit-tap-highlight-color: transparent;
+        padding: 5px 10px;
+
+        span{
+            text-shadow: 0 0 10px #219cf3, 0 0 10px #219cf3;
+            transition: all .3s ease-in-out;
+            color: #a3d1f1;
+        }
+        &:hover{
+            background: #000;
+            box-shadow: 0 0 5px rgba(146, 77, 12, 0.3), 
+                    0 0 10px rgba(146, 77, 12, 0.3), 
+                    0 0 15px rgba(146, 77, 12, 0.3), 
+                    inset 0 0 5px #a77314;
+            border: 3px solid #a77314;
+        }
+        &:active{
+            background: #000;
+            box-shadow: 0 0 5px rgba(243, 33, 44, 0.3), 
+                    0 0 10px rgba(243, 33, 44, 0.3), 
+                    0 0 15px rgba(243, 33, 44, 0.3), 
+                    inset 0 0 5px #f32121;
+            border: 3px solid #f32121;
+        }
+        
+
+        &-backspace{
+            width:120px;
+            justify-content: flex-end;
+        }
+        &-tab{
+            width:100px;
+            justify-content: flex-start;
+        }
+        &-capslock{
+            width:120px;
+            font-size: .5rem;
+            justify-content: flex-start;
+        }
+        &-enter{
+            width:130px;
+            justify-content: flex-end;
+        }
+        &-shift{
+            width:160px;
+
+            &left{
+                justify-content: flex-start;
+            }
+            &right{
+                justify-content: flex-end;
+            }
+        }
+        &-long{
+            width: 80px;
+            justify-content: flex-start;
+        }
+        &-ctrl, &-alt{
+            font-size: .5rem;
+            justify-content: flex-start;
+        }
+        &-space{
+           width: 540px;
+        }
+        &-arrow{
+            height: 35px;
+
+            &Up{
+                margin: 5px 75px;
+            }
+            &Left, &Down, &Right{
+                position: relative;
+                top: -30px;
+            }
+            &Left{
+                margin-left: auto;
+            }
+        }
+    }
+}
+

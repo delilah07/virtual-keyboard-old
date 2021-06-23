@@ -1,0 +1,24 @@
+{
+  "name": "virtual-keyboard",
+  "version": "1.0.0",
+  "description": "start gulp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Iryna Abrosimova",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "browser-sync": "^2.26.5",
+    "del": "^5.0.0",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "normalize.css": "^8.0.1"
+  }
+}
