@@ -11,6 +11,7 @@ export const keyboard = {
     properties: {
         value: "",
         capsLock: false,
+        shift: false,
         keyboardLanguage: JSON.parse(sessionStorage.getItem('language')) || engKeyboard,
         languageText: JSON.parse(sessionStorage.getItem('languageText')) || "English",
     },
@@ -49,14 +50,13 @@ export const keyboard = {
 
     _createKeys() {
         const fragment = document.createDocumentFragment();
-
+        let keyboardSmall = this.properties.keyboardLanguage.map(({ small }) => small)
+        let keyboardShift = this.properties.keyboardLanguage.map(({ shift }) => shift)
         // Create HTML for an icon
 
         const createIconHTML = (icon_name) => {
             return `<span class="material-icons">${icon_name}</span>`;
         };
-       
-       
 
         this.properties.keyboardLanguage.forEach(key => {
             const keyElement = document.createElement("button");
@@ -65,8 +65,8 @@ export const keyboard = {
             keyElement.setAttribute("type", "button");
             keyElement.classList.add("keyboard__key");
 
-            switch (key) {
-                case "backspace":
+            switch (key.small) {
+                case "Backspace":
                     keyElement.classList.add("keyboard__key-backspace");
                     keyElement.innerHTML = createIconHTML("backspace");
 
@@ -78,29 +78,32 @@ export const keyboard = {
 
                     break;
 
-                case "tab":
+                case "Tab":
                     keyElement.classList.add("keyboard__key-tab");
                     keyElement.innerHTML = createIconHTML("swap_horiz");
 
                     keyElement.addEventListener("click", () => {
                         this.properties.value += "\t";
                         this.elements.textarea.textContent = this.properties.value;
-                        console.log( this.properties.value);
                     });
 
                     break;
 
-                case "caps":
+                case "CapsLock":
                     keyElement.classList.add("keyboard__key-capslock");
                     keyElement.textContent = "CapsLock";
                     keyElement.addEventListener("click", () => {
+                        if (this.properties.shift){
+                            this._toggleShift();
+                            document.querySelector('.keyboard__key-shift').classList.remove('active');
+                        }
                         this._toggleCapsLock();
-                        keyElement.classList.toggle(this.properties.capsLock);
+                        keyElement.classList.toggle('active');
                     });
 
                     break;
 
-                case "enter":
+                case "Enter":
                     keyElement.classList.add("keyboard__key-enter");
                     keyElement.innerHTML = createIconHTML("keyboard_return");
 
@@ -112,38 +115,55 @@ export const keyboard = {
 
                     break;
 
-                case "shift left":
+                case "ShiftLeft":
                     keyElement.classList.add("keyboard__key-shift", "keyboard__key-shiftleft");
                     keyElement.innerHTML = createIconHTML("vertical_align_top");
 
+                    keyElement.addEventListener("click", () => {
+                        if (this.properties.capsLock){
+                            this._toggleCapsLock();
+                            document.querySelector('.keyboard__key-capslock').classList.remove('active');
+                        }
+                        this._toggleShift();
+                        keyElement.classList.toggle('active');
+                    });
+
                     break;
 
 
-                case "shift right":
+                case "ShiftRight":
                     keyElement.classList.add("keyboard__key-shift", "keyboard__key-shiftright");
                     keyElement.innerHTML = createIconHTML("vertical_align_top");
 
+                    keyElement.addEventListener("click", () => {
+                        if (this.properties.capsLock){
+                            this._toggleCapsLock();
+                            document.querySelector('.keyboard__key-capslock').classList.remove('active');
+                        }
+                        this._toggleShift();
+                        keyElement.classList.toggle('active');
+                    });
                     break;
                     
                 
-                case "|":
+                case "\\":
                     keyElement.classList.add("keyboard__key-long");
-                    keyElement.textContent = "|";
+                    keyElement.textContent = "\\";
 
                     break;
                 
-                case "ctrl":
+                case "Ctrl":
                     keyElement.classList.add("keyboard__key-ctrl");
                     keyElement.textContent = "Ctrl";
 
                     break;
-                case "alt":
+                case "Alt":
                     keyElement.classList.add("keyboard__key-alt");
                     keyElement.textContent = "Alt";
 
                     break;
 
-                case "space":
+                case "Space":
                     keyElement.classList.add("keyboard__key-space");
                     keyElement.innerHTML = createIconHTML("space_bar");
 
@@ -154,35 +174,41 @@ export const keyboard = {
                     });
                     break;
 
-                case "arrowUp":
+                case "&uarr;":
                     keyElement.classList.add("keyboard__key-arrow","keyboard__key-arrowUp");
                     keyElement.innerHTML = createIconHTML("keyboard_arrow_up");
 
                     break;
 
-                case "arrowDown":
+                case "&darr;":
                     keyElement.classList.add("keyboard__key-arrow","keyboard__key-arrowDown");
                     keyElement.innerHTML = createIconHTML("keyboard_arrow_down");
 
                     break;
 
-                case "arrowLeft":
+                case "&larr;":
                     keyElement.classList.add("keyboard__key-arrow","keyboard__key-arrowLeft");
                     keyElement.innerHTML = createIconHTML("keyboard_arrow_left");
 
                     break;
 
-                case "arrowRight":
+                case "&rarr;":
                     keyElement.classList.add("keyboard__key-arrow","keyboard__key-arrowRight");
                     keyElement.innerHTML = createIconHTML("keyboard_arrow_right");
 
                     break;
 
                 default:
-                    keyElement.textContent = key.toLowerCase();
+                    keyElement.textContent = key.small;
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+                        if (this.properties.shift){
+                            this.properties.value += key.shift;
+                        } else if (this.properties.capsLock){
+                            this.properties.value += key.small.toUpperCase()
+                        } else{
+                            this.properties.value += key.small;
+                        }
                         this.elements.textarea.textContent = this.properties.value;
                         console.log( this.properties.value);
                     });
@@ -198,29 +224,40 @@ export const keyboard = {
 
     _toggleCapsLock() {
         this.properties.capsLock = !this.properties.capsLock;
-
-        for (const key of this.elements.keys) {
-            if (key.childElementCount === 0) {
-                key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+        this.properties.keyboardLanguage.forEach((keyElement,index) => {
+            if (!keyElement.functional.includes('true'))     {  
+                this.elements.keys[index].textContent = this.properties.capsLock ? 
+                this.elements.keys[index].textContent.toUpperCase() : this.elements.keys[index].textContent.toLowerCase();
             }
-        }
+        });
+
     },
+    _toggleShift() {
+        this.properties.shift = !this.properties.shift;
+        this.properties.keyboardLanguage.forEach((keyElement,index) => {
+            if (!keyElement.functional.includes('true'))     {  
+                this.elements.keys[index].textContent = this.properties.shift ? 
+                                    keyElement.shift : 
+                                    keyElement.small;
+            }
+        });
+    },
+
+
     changeLanguage() {
+        this.properties.capsLock = false;
+        this.elements.keysContainer.innerHTML='';
         if (this.properties.keyboardLanguage === engKeyboard) {
             this.properties.keyboardLanguage = ruKeyboard ;
-            this.elements.keysContainer.innerHTML='';
             this.elements.language.innerHTML = ("Russion");
-            this.elements.keysContainer.appendChild(this._createKeys());
-            sessionStorage.setItem('language', JSON.stringify(this.properties.keyboardLanguage));
-            sessionStorage.setItem('languageText', JSON.stringify(this.elements.language.innerHTML));
+            
         } else {
             this.properties.keyboardLanguage = engKeyboard;
-            this.elements.keysContainer.innerHTML='';
             this.elements.language.innerHTML = ("English");
-            this.elements.keysContainer.appendChild(this._createKeys());
-            sessionStorage.setItem('language', JSON.stringify(this.properties.keyboardLanguage));
-            sessionStorage.setItem('languageText', JSON.stringify(this.elements.language.innerHTML));
         }
+        this.elements.keysContainer.appendChild(this._createKeys());
+        sessionStorage.setItem('language', JSON.stringify(this.properties.keyboardLanguage));
+        sessionStorage.setItem('languageText', JSON.stringify(this.elements.language.innerHTML));
     }
 }
 
