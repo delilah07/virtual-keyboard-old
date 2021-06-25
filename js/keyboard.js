@@ -50,20 +50,20 @@ export const keyboard = {
 
     _createKeys() {
         const fragment = document.createDocumentFragment();
-        let keyboardSmall = this.properties.keyboardLanguage.map(({ small }) => small)
-        let keyboardShift = this.properties.keyboardLanguage.map(({ shift }) => shift)
+        
         // Create HTML for an icon
 
         const createIconHTML = (icon_name) => {
             return `<span class="material-icons">${icon_name}</span>`;
         };
 
+        
         this.properties.keyboardLanguage.forEach(key => {
             const keyElement = document.createElement("button");
-
             // Add attributes/classes
             keyElement.setAttribute("type", "button");
             keyElement.classList.add("keyboard__key");
+            keyElement.dataset.keyCode = `${key.code}`
 
             switch (key.small) {
                 case "Backspace":
@@ -258,8 +258,124 @@ export const keyboard = {
         this.elements.keysContainer.appendChild(this._createKeys());
         sessionStorage.setItem('language', JSON.stringify(this.properties.keyboardLanguage));
         sessionStorage.setItem('languageText', JSON.stringify(this.elements.language.innerHTML));
+    },
+
+    typing() {
+        let key = document.querySelector(`.keyboard__key[data-key-code="${event.code}"]`);
+
+            switch (key.dataset.keyCode) {
+                case 'Backspace':
+                        this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+                        this.elements.textarea.textContent = this.properties.value;
+                    break;
+
+                case 'Tab':
+                        this.properties.value += "\t";
+                        this.elements.textarea.textContent = this.properties.value;
+                
+                    break;
+
+                case 'CapsLock':
+                        if (this.properties.shift){
+                            this._toggleShift();
+                            document.querySelector('.keyboard__key-shift').classList.remove('active');
+                        }
+                        this._toggleCapsLock();
+                        key.classList.toggle('active');
+
+                    break;
+
+                case 'Enter':
+                        this.properties.value += "\n";
+                        this.elements.textarea.textContent = this.properties.value;
+
+                    break;
+
+                case 'ShiftLeft':
+                   
+                        if (this.properties.capsLock){
+                            this._toggleCapsLock();
+                            document.querySelector('.keyboard__key-capslock').classList.remove('active');
+                        }
+                        this._toggleShift();
+                        key.classList.toggle('active');
+
+                    break;
+                case 'ShiftRight':
+                
+                    if (this.properties.capsLock){
+                        this._toggleCapsLock();
+                        document.querySelector('.keyboard__key-capslock').classList.remove('active');
+                    }
+                    this._toggleShift();
+                    key.classList.toggle('active');
+
+                    break;
+
+                case 'Space':
+                        this.properties.value += " ";
+                        this.elements.textarea.textContent = this.properties.value;
+                    break;
+
+                case "ControlRight":
+
+                    break;
+
+                case "AltRight":
+
+                    break;
+
+                case "ControlLeft":
+
+                    break;
+
+                case "AltLeft":
+
+                    break;
+
+                case "ArrowUp":
+
+                    break;
+
+                case "ArrowDown":
+
+                    break;
+
+                case "ArrowRight":
+
+                    break;
+
+                case "ArrowLeft":
+
+                    break;
+
+                default:
+                        this.properties.value += key.innerHTML;
+   
+                        this.elements.textarea.textContent = this.properties.value;
+                    break;
+            }
     }
 }
+document.addEventListener('keydown', (event) => {
+    
+    if (event.ctrlKey && event.altKey) {
+        setTimeout(() => keyboard.changeLanguage(),500);
+    }
+    
+    event.preventDefault;
+    document.querySelector(`.keyboard__key[data-key-code="${event.code}"]`).classList.add('pressed');
+    keyboard.typing();
+});
+
+
+document.addEventListener('keyup', (event) => { 
+    document.querySelectorAll('.keyboard__key').forEach(function(element) {
+        element.classList.remove('pressed'); 
+        event.stopPropagation;  
+    });
+});
+
 
 
 

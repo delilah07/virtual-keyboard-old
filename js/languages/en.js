@@ -412,7 +412,7 @@ export const engKeyboard = [
       small: 'Ctrl',
       shift: 'Ctrl',
       code: 'ControlRight',
-      keycode: '17',
+      keycode: '177',
       functional: 'true',
     },
     {
